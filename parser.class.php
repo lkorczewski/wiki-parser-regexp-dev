@@ -5,44 +5,6 @@
 // Łukasz Korczewski <lukasz.korczewski@gmail.com>
 //===========================================================
 
-function convert($in){
-	
-	/*	
-	// parser
-	$input_lines = explode("\r\n", $out);
-	
-	$block = '';
-	$output_lines = array();
-	
-	forech($input_lines as $line){
-		
-		if($line = '') $block = ''; continue;
-		
-		$old_block = $block;
-		if(substr($line,0,1)=='|') { $block = 'table'; $output_lines[] = '<table>'; }
-		
-		if($block != $old_block){
-			switch($old_block){
-				case 'table': $block = ''; $output_lines[] = '</table>'; break;
-				default: $block = ''; break; 
-			}
-		}
-		
-		switch($block){
-			case 'table':
-				$line_split = explode('|', $line);
-				unset($line_split[0]);
-				unset($line_split[count($line_split)-1]);
-				$output_lines = '<tr>'.implode
-		}
-	}
-	
-	$out = implode("\r\n", $output_lines);
-	*/
-	
-	return $out;
-}
-
 class Wiki_Parser {
 	private $search;
 	private $replace;
@@ -73,7 +35,7 @@ class Wiki_Parser {
 		$this->search = array();
 		$this->replace = array();
 		
-		// inline modifications	
+		// inline modifications
 		$this->search = array_merge($this->search, array(
 			'/\/\/(.+?)\/\//',
 			'/\*\*(.+?)\*\*/',
@@ -91,17 +53,10 @@ class Wiki_Parser {
 			'/\[\[([^\]]+)\|([^\]]+)\]\]/',
 			'/\[\[([^\]]+)\]\]/'
 		));
-		/*
 		$this->replace = array_merge($this->replace, array(
 			'<a href="\2">\1</a>',
 			"<a href=\"{$this->link_prefix}$2{$this->link_postfix}\">$1</a>",
 			"<a href=\"{$this->link_prefix}$1{$this->link_postfix}\">$1</a>"
-		));
-		*/
-		$this->replace = array_merge($this->replace, array(
-			'<a href="\2">\1</a>',
-			"<a href=\"?page=$2\">$1</a>",
-			"<a href=\"?page=$1\">$1</a>"
 		));
 		
 		// headers and paragraphs
@@ -110,7 +65,7 @@ class Wiki_Parser {
 			'/\n!! (.*)\r\n\r/m',
 			'/\n!!! (.*)\r\n\r/m',
 			'/\n!!!! (.*)\r\n\r/m',
-			'/\n([^\*#|!].*(\r\n.+)*)\r\n\r/m'
+			'/\n([^\*#|!<].*(\r\n.+)*)\r\n\r/m'
 		));
 		$this->replace = array_merge($this->replace, array(
 			"\n<h1>$1</h1>\r\n\r", // co jeśli ostatnia linia?
@@ -121,6 +76,8 @@ class Wiki_Parser {
 		));
 		
 		// lists
+		// to do: mixed  lists
+		/*
 		$this->search = array_merge($this->search, array(
 			'/\n((\*+ .+\r\n)+)\r/m',
 			'/\n\*{1} (.+)\r\n((\*{2}) .+\r\n(?:\3\** .+\r\n)*)/m',
@@ -133,20 +90,34 @@ class Wiki_Parser {
 			'/\n#{3} (.+)\r\n((#{4}) .+\r\n(?:\3#* .+\r\n)*)/m',
 			'/\n#+ (.+)\r/m'
 		));
+		*/
+		/**/
+		$this->search = array_merge($this->search, array(
+			'/\n((\*[\*#]* .+\r\n)+)\r/m',
+			'/\n((#[\*#]* .+\r\n)+)\r/m',
+			'/\n([\*#]{1}) (.+)\r\n(\1\* .+\r\n(?:\1\*[\*#]* .+\r\n)*)/m',
+			'/\n([\*#]{1}) (.+)\r\n(\1# .+\r\n(?:\1#[\*#]* .+\r\n)*)/m',
+			'/\n([\*#]{2}) (.+)\r\n(\1\* .+\r\n(?:\1\*[\*#]* .+\r\n)*)/m',
+			'/\n([\*#]{2}) (.+)\r\n(\1# .+\r\n(?:\1#[\*#]* .+\r\n)*)/m',
+			'/\n([\*#]{3}) (.+)\r\n(\1\* .+\r\n(?:\1\*[\*#]* .+\r\n)*)/m',
+			'/\n([\*#]{3}) (.+)\r\n(\1# .+\r\n(?:\1#[\*#]* .+\r\n)*)/m',
+			'/\n[\*#]+ (.+)\r/m'
+		));
+		/**/
 		$this->replace = array_merge($this->replace, array(
 			"\n<ul>\r\n$1</ul>\r\n\r",
-			"\n<li>$1\r\n<ul>\r\n$2</ul>\r\n</li>\r\n",
-			"\n<li>$1\r\n<ul>\r\n$2</ul>\r\n</li>\r\n",
-			"\n<li>$1\r\n<ul>\r\n$2</ul>\r\n</li>\r\n",
-			"\n<li>$1</li>\r",
 			"\n<ol>\r\n$1</ol>\r\n\r",
-			"\n<li>$1\r\n<ol>\r\n$2</ol>\r\n</li>\r\n",
-			"\n<li>$1\r\n<ol>\r\n$2</ol>\r\n</li>\r\n",
-			"\n<li>$1\r\n<ol>\r\n$2</ol>\r\n</li>\r\n",
+			"\n<li>$2\r\n<ul>\r\n$3</ul>\r\n</li>\r\n",
+			"\n<li>$2\r\n<ol>\r\n$3</ol>\r\n</li>\r\n",
+			"\n<li>$2\r\n<ul>\r\n$3</ul>\r\n</li>\r\n",
+			"\n<li>$2\r\n<ol>\r\n$3</ol>\r\n</li>\r\n",
+			"\n<li>$2\r\n<ul>\r\n$3</ul>\r\n</li>\r\n",
+			"\n<li>$2\r\n<ol>\r\n$3</ol>\r\n</li>\r\n",
 			"\n<li>$1</li>\r"
 		));
 		
 		// tables
+		// to do: make it work
 		$this->search = array_merge($this->search, array(
 			'/\n((\|!? .* \|+\r\n)+)\r/m',
 			'/\n\|(!? .*) \|+\r/',
@@ -168,9 +139,21 @@ class Wiki_Parser {
 	}
 	
 	// cleaning before saving
+	// to do:
+	//  - trimming final white spaces in every line(?)
 	
 	public function clean($in){
-		return trim($in)."\r\n";
+		$out = $in;
+		
+		// reducing new lines
+		$pattern = array('/(?:\r\n){3,}/');
+		$replacement = array("\r\n\r\n");
+		$out = preg_replace($pattern, $replacement, $in);
+		
+		// trimming
+		$out = trim($out)."\r\n";
+		
+		return $out;
 	}
 }
 
