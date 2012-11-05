@@ -3,7 +3,7 @@ wiki-parser-regexp-dev
 
 This project is a small wiki markup parser written in PHP and using regular expressions for parsing. Since purelyregexp parsing is quite a tricky task, the chief goal was restricted to correct rendering of a well-formatted markup.
 
-WARNING! This is the development version, which means it is unfinished, it contains outright errors and is generally unsuitable for serious use.
+WARNING! This is the development version, which means it is unfinished, it contains outright errors and is generally unsuitable for serious usage.
 
 ## Class synopsis
 
@@ -13,10 +13,10 @@ constructor
 **Wiki_Parser::set_link($prefix, $suffix)**  
 defines the internal link by prefix (`$prefix`) and suffix (`$suffix`) of the page identifier
 
-**Wiki_Parser::parse($in);**  
+**Wiki_Parser::parse($in)**  
 parses markup into HTML; the markup syntax is defined in the following part of this documentation
 
-**Wiki_Parser::clean($in);**  
+**Wiki_Parser::clean($in)**  
 performs some basic cleaning tasks on a markup text, chiefly removing some leading and trailing whitespaces; intended for use prior to storing the markup text
 
 ## Wiki markup
