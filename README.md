@@ -52,7 +52,7 @@ There are some general principles:
     one
     paragraph.
 
-Headers are restricted to single lines. In case of paragrphs, single line break doesn't influence the rendering.
+Headers are restricted to single lines. In case of paragraphs, single line break doesn't influence the rendering.
 
 ### Lists
 
