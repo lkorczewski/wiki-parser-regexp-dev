@@ -1,9 +1,9 @@
 wiki-parser-regexp-dev
 ======================
 
-This project is a small wiki markup parser written in PHP and using regular expressions for parsing. Since purelyregexp parsing is quite a tricky task, the chief goal was restricted to correct rendering of a well-formatted markup.
+This project is a small wiki markup parser written in PHP and using regular expressions for parsing. Since purely regexp parsing is quite a tricky task, the chief goal was restricted to correct rendering of a well-formatted markup.
 
-WARNING! This is the development version, which means it is unfinished, it contains outright errors and is generally unsuitable for serious usage.
+WARNING! This is the development version, which means it is unfinished, it contains outright errors and it is generally unsuitable for serious usage.
 
 ## Class synopsis
 
